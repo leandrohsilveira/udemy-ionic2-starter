@@ -2,6 +2,7 @@
 
 export interface Address {
 
+  erro: boolean,
   cep: string,
   logradouro: string,
   complemento: string,

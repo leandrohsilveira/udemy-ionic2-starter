@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core'
 import { NavController, NavParams } from 'ionic-angular'
-import { LoadingController, Loading } from 'ionic-angular'
+import { LoadingController, Loading, AlertController } from 'ionic-angular'
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/catch';
 
 import { Address } from '../../app/app.domain'
 import { ConnectionService } from '../../providers/connection-service'
@@ -22,7 +23,8 @@ export class CepSearchPage {
     public navCtrl: NavController, 
     public navParams: NavParams, 
     private loadingCtrl: LoadingController,
-    private connectionService: ConnectionService) {}
+    private connectionService: ConnectionService,
+    private alertCtrl: AlertController) {}
 
   @Input()
   cep: string;
@@ -46,11 +48,20 @@ export class CepSearchPage {
     this.loading = this.loadingCtrl.create({content: 'Fetching CEP...'});
     this.loading.present();
     this.connectionService.getCep(this.cep)
-                           .finally(() => this.loading.dismiss())
-                           .subscribe(address => {
-                             console.debug(`CEP ${this.cep} fetched. Result:`, address)
-                             this.address = address;
-                           });
+                           .subscribe((address: Address) => {
+                              if(address.erro) {
+                                 this.showAlert(() => 'CEP not found.')
+                              } else {
+                                console.debug(`CEP ${this.cep} fetched. Result:`, address)
+                                this.address = address;
+                              }
+                           },
+                           console.error,
+                           () => this.loading.dismiss());
+  }
+
+  private showAlert(errorExtractor) {
+    this.alertCtrl.create({title: 'Error', subTitle: errorExtractor(), buttons:['Close']}).present();
   }
 
 }
