@@ -1,0 +1,22 @@
+page-cep-search {
+    
+    ion-item.ng-invalid.ng-dirty {
+
+        &,
+        &.input-has-focus {
+            & ion-label,
+            & p,
+            & ion-input {
+                color: #f53d3d;
+            }
+
+            & .item-inner {
+                border-bottom-color: #f53d3d;
+                box-shadow: inset 0 -1px 0 0 #f53d3d;
+            }
+
+        }
+
+    }
+
+}

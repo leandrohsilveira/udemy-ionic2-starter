@@ -1,0 +1,85 @@
+<!--
+  Generated template for the CepSearch page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Search CEP</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <form #cepForm="ngForm" (ngSubmit)="search()">
+    <ion-item>
+      <ion-label floating>CEP</ion-label>
+      <ion-input type="text" 
+                  name="cepField" 
+                  #cepField="ngModel" 
+                  [(ngModel)]="cep"
+                  required
+                  maxlength="8"
+                  pattern="\\d{8}">
+      </ion-input>
+    </ion-item>
+    <p *ngIf="!cepField.pristine && cepField.errors?.required" color="danger" padding-left>The CEP value is required</p>
+    <p *ngIf="!cepField.pristine && cepField.errors?.pattern" color="danger" padding-left>The CEP value should have 8 numbers!</p>
+
+    <div padding>
+      <button type="submit" [disabled]="cepForm.form.invalid" ion-button icon-left block>
+        <ion-icon name="search"></ion-icon>
+        Search
+      </button>
+    </div>
+  </form>
+
+  <div padding *ngIf="address">
+    <ion-grid>
+
+      <ion-row>
+        <ion-col col-4 text-right><strong>Street</strong></ion-col>
+        <ion-col col-8>{{ address.logradouro }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-4 text-right><strong>Complement</strong></ion-col>
+        <ion-col col-8>{{ address.complemento }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-4 text-right><strong>District</strong></ion-col>
+        <ion-col col-8>{{ address.bairro }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-4 text-right><strong>City</strong></ion-col>
+        <ion-col col-8>{{ address.localidade }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-4 text-right><strong>State</strong></ion-col>
+        <ion-col col-8>{{ address.uf }}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-4></ion-col>
+        <ion-col col-4>
+          <button ion-button icon-left block (click)="reset()">
+            <ion-icon name="refresh"></ion-icon>
+            Reset
+          </button>
+        </ion-col>
+        <ion-col col-4></ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </div>
+
+</ion-content>
